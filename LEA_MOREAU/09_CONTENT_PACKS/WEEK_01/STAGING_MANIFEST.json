@@ -1,0 +1,64 @@
+{
+  "pack_name": "WEEK_01",
+  "post_id": "CAROUSEL_01_SLOW_PARIS_MORNING",
+  "format": "CAROUSEL",
+  "destination_account": "@pavan_create",
+  "validation_passed": true,
+  "mode": "STAGED",
+  "slides": [
+    {
+      "filename": "SLIDE_01_MORNING_COFFEE.png",
+      "width": 1080,
+      "height": 1350,
+      "format": "PNG",
+      "aspect_ratio": 0.8,
+      "valid": true,
+      "slide_index": 1
+    },
+    {
+      "filename": "SLIDE_02_OUTFIT_DETAILS.png",
+      "width": 1080,
+      "height": 1350,
+      "format": "PNG",
+      "aspect_ratio": 0.8,
+      "valid": true,
+      "slide_index": 2
+    },
+    {
+      "filename": "SLIDE_03_PARIS_STREET.png",
+      "width": 1080,
+      "height": 1350,
+      "format": "PNG",
+      "aspect_ratio": 0.8,
+      "valid": true,
+      "slide_index": 3
+    }
+  ],
+  "caption_metadata": {
+    "char_count": 1586,
+    "hashtag_count": 10,
+    "hashtags": [
+      "#parisianlifestyle",
+      "#pariscafes",
+      "#saintgermain",
+      "#frenchgirlaesthetic",
+      "#neutraloutfits",
+      "#paristravel",
+      "#slowliving",
+      "#autumninparis",
+      "#parisienne",
+      "#leamoreau"
+    ],
+    "has_ai_disclosure": true,
+    "raw_text": "# Carousel 01 \u2014 SEO-Optimized Caption & Metadata\n## Theme: A Slow Paris Morning (Un Matin Doux)\n\n### Master SEO-Optimized Instagram Caption:\n\n```text\nA slow autumn morning in Paris \u2615\ud83e\udd50 Finding my favorite wicker chair at a corner caf\u00e9 in Saint-Germain-des-Pr\u00e9s before the city wakes up. \n\nThere is an effortless art to Parisian lifestyle: ordering a hot caf\u00e9 cr\u00e8me, savoring a fresh butter croissant, and watching the morning light bounce off the historic Haussmann limestone facades. \n\nToday's look is all about French girl aesthetic essentials: an off-the-shoulder cream ribbed knit sweater, delicate layered gold jewelry, and vintage cognac leather \u2014 timeless, comfortable, and made for wandering cobblestone streets.\n\nFrom morning coffee rituals to quiet balcony views overlooking the Paris rooftops, here is your daily reminder to slow down and romanticize the ordinary moments. \u2601\ufe0f\u2728\n\nWhich slide captures your favorite autumn vibe: 1, 2, or 3? Tell me below in the comments! \ud83d\udc47\n\n\ud83d\udccc Save this post for your next Paris trip & autumn outfit inspiration!\n\n\u2014\n\nFictional AI creator \u2014 L\u00e9a Moreau \u2728\n\n#parisianlifestyle #pariscafes #saintgermain #frenchgirlaesthetic #neutraloutfits #paristravel #slowliving #autumninparis #parisienne #leamoreau\n```\n\n### Keyword Search Ranking Targets:\n- **Primary Keywords:** Paris lifestyle, Saint-Germain caf\u00e9, French girl aesthetic, morning in Paris.\n- **Secondary Keywords:** Autumn in Paris, neutral outfit ideas, Paris travel guide, slow living diary.\n- **Search Intent:** Travel inspiration, fashion styling formulas, aesthetic lifestyle photography."
+  },
+  "staging_directory": "C:\\Users\\saipa\\OneDrive\\Desktop\\empty\\LEA_MOREAU\\09_CONTENT_PACKS\\WEEK_01\\STAGING",
+  "publishing_status": "PUBLISHED",
+  "safeguards": {
+    "auto_publish_enabled": false,
+    "manual_review_required": true
+  },
+  "media_id": "18072204812604402",
+  "permalink": "https://www.instagram.com/p/DfezJjim1QF/",
+  "synthid_removed": true
+}

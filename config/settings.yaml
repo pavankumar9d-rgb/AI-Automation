@@ -1,0 +1,397 @@
+# Instagram AI Automation Configuration
+
+## Account Configuration
+```yaml
+# Primary Instagram Account
+primary_account:
+  name: "main"                    # Friendly name for MCP
+  username: "your_instagram_handle"  # @handle
+  user_id: "17841400000000000"       # Instagram User ID (from token exchange)
+  tier: "facebook_login"             # instagram_login | facebook_login | unofficial
+
+# Additional Accounts (optional)
+additional_accounts: []
+```
+
+## MCP Server Configuration
+```yaml
+mcp:
+  command: "instagram-mcp"
+  transport: "stdio"
+  scope: "user"                     # user | project
+  env_vars:
+    IG_ACCESS_TOKEN: "YOUR_LONG_LIVED_TOKEN"
+    IG_USER_ID: "YOUR_IG_USER_ID"
+    IG_HOST: "graph.facebook.com"   # graph.facebook.com | graph.instagram.com
+    IG_PREFERRED: "main"            # Preferred account name
+    IG_READ_ONLY: "0"               # 1 = disable all write tools
+    IG_UNOFFICIAL: "0"              # 1 = enable unofficial tier (NOT RECOMMENDED)
+    IG_AUDIT_LOG: "automation/logs/audit.log"
+```
+
+## Content Configuration
+```yaml
+content:
+  # Brand voice guidelines
+  brand_voice:
+    tone: "friendly, expert, encouraging"
+    vocabulary_level: "accessible"
+    emoji_usage: "moderate (0-3 per post)"
+    cta_style: "single, clear, low-pressure"
+
+  # Content pillars (must sum to 100)
+  pillars:
+    educational: 40
+    inspirational: 20
+    personal_story: 20
+    promotional: 10
+    community_ugc: 10
+
+  # Posting schedule preferences
+  posting:
+    frequency_per_week: 5
+    preferred_days: ["Mon", "Tue", "Wed", "Thu", "Fri"]
+    preferred_times: ["09:00", "12:00", "17:00"]  # Local timezone
+    timezone: "America/New_York"
+
+  # Reel specifications
+  reel_specs:
+    min_duration_seconds: 3
+    max_duration_seconds: 90
+    target_duration_seconds: 30
+    resolution: "1080x1920"
+    aspect_ratio: "9:16"
+    max_file_size_mb: 300
+    video_codec: "H.264"
+    audio_codec: "AAC"
+    frame_rate: 30
+
+  # Image specifications
+  image_specs:
+    format: "JPEG"
+    max_file_size_mb: 8
+    recommended_resolution: "1080x1080"
+
+  # Carousel specifications
+  carousel_specs:
+    min_items: 2
+    max_items: 20
+    image_format: "JPEG"
+    video_format: "MP4"
+```
+
+## Hashtag Configuration
+```yaml
+hashtags:
+  # Tiered strategy
+  tiers:
+    niche_specific:
+      count: 5-10
+      post_count_range: "10K-100K"
+      examples: []
+    category_industry:
+      count: 5-10
+      post_count_range: "100K-1M"
+      examples: []
+    broad_discovery:
+      count: 3-5
+      post_count_range: "1M+"
+      examples: []
+    branded:
+      count: 1-3
+      examples: ["#yourbrand", "#yourseries"]
+    trending_seasonal:
+      count: 0-3
+      examples: []
+
+  # Rotation rules
+  rotation:
+    min_new_per_post: 5
+    max_unique_per_7_days: 30
+    never_repeat_exact_set: true
+
+  # Banned hashtag list (update monthly)
+  banned_list: []
+```
+
+## Publishing Configuration
+```yaml
+publishing:
+  # Safety settings
+  safety:
+    require_approval_before_publish: true
+    require_approval_before_delete: true
+    require_approval_before_dm: true
+    max_posts_per_day: 10  # Well under 100 limit
+    quota_buffer: 20       # Stop at 80/100
+
+  # Staging workflow
+  staging:
+    use_containers: true
+    container_expiry_hours: 24
+    auto_publish_on_approval: false  # Manual final step
+
+  # Scheduling (local, not native)
+  scheduling:
+    enabled: true
+    scheduler: "windows_task_scheduler"  # windows_task_scheduler | cron
+    max_schedule_ahead_hours: 24  # Container limit
+    timezone: "America/New_York"
+
+  # Post types enabled
+  enabled_types:
+    reels: true
+    images: true
+    carousels: true
+    stories: true
+```
+
+## Analytics Configuration
+```yaml
+analytics:
+  # Collection schedule
+  collection:
+    daily_snapshot_time: "06:00"
+    weekly_report_day: "Monday"
+    weekly_report_time: "07:00"
+    monthly_report_day: 1
+    monthly_report_time: "08:00"
+
+  # Metrics to track
+  metrics:
+    account_level:
+      - followers_count
+      - impressions
+      - reach
+      - profile_views
+      - website_clicks
+      - get_directions_clicks
+      - phone_call_clicks
+      - text_message_clicks
+      - email_contacts
+    media_level:
+      - reach
+      - impressions
+      - engagement
+      - likes
+      - comments
+      - shares
+      - saved
+      - video_views
+      - video_play_retention_graph
+
+  # Retention
+  retention:
+    raw_snapshots_days: 90
+    summaries_years: 1
+    growth_csv_permanent: true
+```
+
+## Engagement Configuration
+```yaml
+engagement:
+  # Comment management
+  comments:
+    triage_schedule: ["09:00", "15:00"]
+    lookback_days: 1
+    auto_reply_enabled: false
+    response_time_targets:
+      sales_intent_minutes: 30
+      questions_minutes: 60
+      complaints_minutes: 60
+      compliments_minutes: 120
+      tags_mentions_minutes: 120
+      feedback_minutes: 240
+      ugc_requests_minutes: 120
+      emoji_only_minutes: 480
+      negative_trolls_minutes: 240
+
+  # DM management
+  dms:
+    check_schedule: ["10:00", "16:00"]
+    auto_reply_enabled: false
+    response_window_hours: 24
+    private_reply_limit_per_comment: 1
+
+  # Community health
+  community:
+    sentiment_analysis_enabled: true
+    spam_detection_enabled: true
+    bot_detection_enabled: true
+```
+
+## Research Configuration
+```yaml
+research:
+  # Competitor tracking
+  competitors:
+    direct:
+      - "competitor1"
+      - "competitor2"
+      - "competitor3"
+    aspirational:
+      - "leader1"
+      - "leader2"
+    adjacent:
+      - "adjacent1"
+
+  # Research schedule
+  schedule:
+    competitor_analysis_weekly: true
+    hashtag_research_monthly: true
+    trend_monitoring_weekly: true
+    content_gap_analysis_monthly: true
+
+  # Hashtag research
+  hashtag_research:
+    seed_topics:
+      - "your_main_topic"
+      - "related_topic_1"
+      - "related_topic_2"
+    target_pool_size: 50
+    validation_required: true
+```
+
+## Automation Configuration
+```yaml
+automation:
+  # Workflow schedules
+  workflows:
+    create_reel_package:
+      trigger: "manual"
+    publish_reel:
+      trigger: "manual"
+    daily_snapshot:
+      trigger: "scheduled"
+      time: "06:00"
+    weekly_report:
+      trigger: "scheduled"
+      day: "Monday"
+      time: "07:00"
+    hashtag_research:
+      trigger: "scheduled"
+      day: 1
+      time: "09:00"
+    comment_triage:
+      trigger: "scheduled"
+      times: ["09:00", "15:00"]
+
+  # Error handling
+  error_handling:
+    max_retries: 3
+    retry_delay_seconds: 60
+    rate_limit_backoff_seconds: 300
+    alert_on_failure: true
+    alert_channels: ["log"]
+
+  # Logging
+  logging:
+    level: "INFO"
+    audit_log: "automation/logs/audit.log"
+    workflow_logs: "automation/logs/workflows/"
+    error_log: "automation/logs/errors.log"
+```
+
+## Paths Configuration
+```yaml
+paths:
+  workspace_root: "C:/Users/saipa/Instagram-AI-Automation"
+  content:
+    ideas: "content/ideas"
+    scripts: "content/scripts"
+    generated_videos: "content/generated-videos"
+    thumbnails: "content/thumbnails"
+    captions: "content/captions"
+    ready_to_publish: "content/ready-to-publish"
+    published: "content/published"
+  analytics:
+    daily: "analytics/daily"
+    weekly: "analytics/weekly"
+    monthly: "analytics/monthly"
+  research:
+    competitors: "research/competitors"
+    hashtags: "research/hashtags"
+    trends: "research/trends"
+  automation:
+    workflows: "automation/workflows"
+    logs: "automation/logs"
+    scripts: "automation/scripts"
+  config:
+    templates: "config/templates"
+    settings: "config/settings.yaml"
+  reports: "reports"
+```
+
+## External Integrations (Optional)
+```yaml
+integrations:
+  # Image/Video Generation (configure if available)
+  image_generation:
+    enabled: false
+    provider: "openai|midjourney|stability|local"
+    api_key_env: "IMAGE_GEN_API_KEY"
+
+  video_generation:
+    enabled: false
+    provider: "runway|pika|stable-video|local"
+    api_key_env: "VIDEO_GEN_API_KEY"
+
+  # TTS for voiceovers
+  tts:
+    enabled: false
+    provider: "elevenlabs|openai|azure|local"
+    api_key_env: "TTS_API_KEY"
+
+  # Transcription
+  transcription:
+    enabled: false
+    provider: "whisper|assembly|deepgram"
+    api_key_env: "TRANSCRIPTION_API_KEY"
+```
+
+## Security Configuration
+```yaml
+security:
+  # Credential management
+  credentials:
+    use_windows_credential_manager: true
+    env_var_prefix: "IG_AUTO_"
+    never_log_tokens: true
+    token_masking: true
+
+  # Audit
+  audit:
+    log_all_writes: true
+    log_all_reads: false
+    retain_audit_days: 365
+
+  # Compliance
+  compliance:
+    gdpr_aware: true
+    coppa_aware: false
+    ftc_disclosure_required: true
+    disclosure_text: "Ad / Sponsored / Affiliate"
+```
+
+---
+
+## Usage Instructions
+
+1. **Copy this file** to `config/settings.yaml`
+2. **Fill in your values** (account IDs, tokens, preferences)
+3. **Secure the file** - never commit to Git
+4. **Reference in workflows** - scripts read from this config
+
+## Environment Variables Alternative
+
+For maximum security, use Windows Credential Manager or environment variables:
+
+```powershell
+# Set in Windows Environment Variables (User scope)
+IG_AUTO_ACCESS_TOKEN=your_token
+IG_AUTO_APP_ID=your_app_id
+IG_AUTO_APP_SECRET=your_app_secret
+IG_AUTO_USER_ID=your_user_id
+```
+
+Then reference in scripts: `$env:IG_AUTO_ACCESS_TOKEN`

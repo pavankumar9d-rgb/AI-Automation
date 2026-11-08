@@ -1,0 +1,49 @@
+name: Autonomous Instagram Campaign Publisher
+
+on:
+  schedule:
+    # Runs every 15 minutes to guarantee exact scheduled publishing
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python Dependencies
+        run: |
+          pip install httpx requests
+
+      - name: Install Cloudflared
+        run: |
+          curl -L --output cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
+          sudo dpkg -i cloudflared.deb
+          cloudflared --version
+
+      - name: Run Campaign Publisher
+        env:
+          INSTAGRAM_FB_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_FB_ACCESS_TOKEN }}
+          INSTAGRAM_FB_IG_USER_ID: ${{ secrets.INSTAGRAM_FB_IG_USER_ID }}
+        run: |
+          python LEA_MOREAU/09_CONTENT_PACKS/WEEK_01/scripts/publish_scheduled.py --check
+
+      - name: Commit and Push Updated Ledger
+        run: |
+          git config --global user.name "Léa Moreau Automation"
+          git config --global user.email "automation@leamoreau.internal"
+          git add LEA_MOREAU/09_CONTENT_PACKS/WEEK_01/PUBLICATION_LEDGER.json
+          git diff-index --quiet HEAD || (git commit -m "Auto-update publication ledger [skip ci]" && git push)
+

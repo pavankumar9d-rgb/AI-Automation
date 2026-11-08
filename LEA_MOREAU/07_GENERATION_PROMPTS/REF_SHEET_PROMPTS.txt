@@ -1,0 +1,25 @@
+# CHARACTER REFERENCE SHEET PROMPTS
+
+## Master Reference
+Photorealistic portrait of Léa Moreau, 25-year-old French woman, chestnut-brown wavy hair center-parted falling to mid-back, hazel-brown eyes with green-gold flecks, warm medium-light skin with visible pores and light freckles across nose and cheeks, soft oval face with gentle jawline, natural lips, slight left-brow asymmetry, small beauty mark left of chin. Wearing cream cable-knit merino sweater. Soft window light from camera-left (north-facing window), large rectangular catchlights in eyes, 85mm lens, f/1.8, ISO 400, full-frame, Kodak Portra 400 color science, sharp focus on nearest eye, creamy bokeh background, warm white neutral wall. No makeup look, no filters, no CGI, no 3D render artifacts.
+
+## REF_01_front_full
+Full-body front-facing view of Léa Moreau, 25, chestnut-brown wavy hair center-parted to mid-back, hazel-brown eyes, warm medium-light skin with pores and freckles, soft oval face, beauty mark left of chin. Wearing cream cable-knit merino sweater and mid-wash straight jeans, white leather sneakers. Relaxed stance, weight evenly distributed, arms natural at sides. Soft north window light, warm white background, 35mm lens, f/4, full-frame, Kodak Portra 400. No text, no labels.
+
+## REF_02_3q_left
+Full-body three-quarter turn left view of Léa Moreau, 25, chestnut-brown wavy hair center-parted to mid-back, hazel-brown eyes, warm medium-light skin with pores and freckles, soft oval face, beauty mark left of chin. Wearing cream cable-knit merino sweater and mid-wash straight jeans. Natural contrapposto, head turned toward camera. Soft north window light, warm white background, 35mm lens, f/4, full-frame, Kodak Portra 400. No text, no labels.
+
+## REF_03_profile_left
+Full-body left-side profile view of Léa Moreau, 25, chestnut-brown wavy hair center-parted to mid-back, hazel-brown eyes, warm medium-light skin with pores and freckles, soft oval face, beauty mark left of chin. Wearing cream cable-knit merino sweater and mid-wash straight jeans. Arms relaxed, head forward. Soft north window light, warm white background, 35mm lens, f/4, full-frame, Kodak Portra 400. No text, no labels.
+
+## REF_04_back
+Full-body back view of Léa Moreau, 25, chestnut-brown wavy hair center-parted to mid-back, warm medium-light skin with pores and freckles. Wearing cream cable-knit merino sweater and mid-wash straight jeans. Head turned slightly over right shoulder, hair falling naturally. Soft north window light, warm white background, 35mm lens, f/4, full-frame, Kodak Portra 400. No text, no labels.
+
+## REF_05_portrait_front
+Close-up front-facing portrait of Léa Moreau, 25, chestnut-brown wavy hair center-parted, hazel-brown eyes with green-gold flecks, warm medium-light skin with visible pores and light freckles across nose and cheeks, soft oval face with gentle jawline, natural lips, slight left-brow asymmetry, small beauty mark left of chin. Neutral expression, soft gaze, eye contact. Soft north window light, large rectangular catchlights, 85mm lens, f/1.8, Kodak Portra 400. No text, no labels.
+
+## REF_06_portrait_3q
+Close-up three-quarter portrait of Léa Moreau, 25, chestnut-brown wavy hair center-parted, hazel-brown eyes with green-gold flecks, warm medium-light skin with visible pores and light freckles, soft oval face, beauty mark left of chin. Head tilted slightly, soft gaze. Soft north window light, large rectangular catchlights, 85mm lens, f/1.8, Kodak Portra 400. No text, no labels.
+
+## REF_07_portrait_profile
+Close-up left-side profile portrait of Léa Moreau, 25, chestnut-brown wavy hair center-parted, hazel-brown eyes with green-gold flecks, warm medium-light skin with visible pores and light freckles, soft oval face, beauty mark left of chin. Jawline visible, ear visible. Soft north window light, large rectangular catchlights, 85mm lens, f/1.8, Kodak Portra 400. No text, no labels.
