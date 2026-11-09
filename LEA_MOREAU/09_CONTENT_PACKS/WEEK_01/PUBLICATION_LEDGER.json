@@ -4,12 +4,12 @@
   "generated_at": "2026-11-08T20:59:00+05:30",
   "status": "STAGED_AWAITING_USER_APPROVAL",
   "total_publications": 7,
-  "uploaded_count": 0,
+  "uploaded_count": 1,
   "posts": [
     {
       "id": "POST_01",
       "type": "CAROUSEL",
-      "title": "Monday Morning Café Routine",
+      "title": "Monday Morning Caf\u00e9 Routine",
       "scheduled_time": "2026-11-09T10:30:00+05:30",
       "directory": "POSTS/POST_01_CAFE_MORNING",
       "slides": [
@@ -18,7 +18,10 @@
         "SLIDE_03.png"
       ],
       "aspect_ratio": "4:5 (1080x1350)",
-      "status": "READY_FOR_UPLOAD"
+      "status": "PUBLISHED",
+      "published_at": "2026-11-09T12:44:56.527722+05:30",
+      "media_id": "17898730803679556",
+      "permalink": "https://www.instagram.com/p/DfgxWOkFLV2/"
     },
     {
       "id": "REEL_01",
@@ -35,7 +38,7 @@
     {
       "id": "POST_02",
       "type": "CAROUSEL",
-      "title": "Autumn in Paris — Minimalist Style",
+      "title": "Autumn in Paris \u2014 Minimalist Style",
       "scheduled_time": "2026-11-11T12:00:00+05:30",
       "directory": "POSTS/POST_02_PARISIAN_STYLE",
       "slides": [
