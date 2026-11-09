@@ -18,6 +18,27 @@ import subprocess
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
 
+# Auto-load .env if running locally
+def load_dotenv():
+    candidates = [
+        Path(__file__).resolve().parent.parent.parent.parent.parent / ".env",
+        Path(__file__).resolve().parent.parent.parent.parent / ".env",
+        Path(r"C:\Users\saipa\Instagram-AI-Automation\.env"),
+        Path(r"c:\Users\saipa\OneDrive\Desktop\empty\.env")
+    ]
+    for c in candidates:
+        if c.exists():
+            with open(c, "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if line and not line.startswith("#") and "=" in line:
+                        k, v = line.split("=", 1)
+                        if k not in os.environ:
+                            os.environ[k] = v.strip()
+            break
+
+load_dotenv()
+
 # Dynamic paths
 SCRIPT_DIR = Path(__file__).resolve().parent
 WEEK_01_DIR = SCRIPT_DIR.parent
@@ -28,8 +49,7 @@ LEDGER_PATH = BASE_DIR / "PUBLICATION_LEDGER.json"
 
 IST = timezone(timedelta(hours=5, minutes=30))
 
-# Fallback token if .env is in environment variables (for GitHub Secrets)
-PAGE_TOKEN = os.environ.get("INSTAGRAM_FB_ACCESS_TOKEN", "YOUR_PAGE_TOKEN_FROM_SECRETS")
+PAGE_TOKEN = os.environ.get("INSTAGRAM_FB_ACCESS_TOKEN", "")
 IG_USER_ID = os.environ.get("INSTAGRAM_FB_IG_USER_ID", "17841423433997524")
 
 class StagingHandler(http.server.SimpleHTTPRequestHandler):
@@ -109,6 +129,11 @@ async def publish_job(job_id: str):
     # Load access token
     token = os.environ.get("INSTAGRAM_FB_ACCESS_TOKEN", PAGE_TOKEN)
     ig_user_id = os.environ.get("INSTAGRAM_FB_IG_USER_ID", IG_USER_ID)
+
+    if not token:
+        raise ValueError("INSTAGRAM_FB_ACCESS_TOKEN is missing or empty! Cannot publish.")
+
+    print(f"Publishing {job_id} to Instagram account {ig_user_id} using Page Token (len {len(token)})...")
 
     server, cf_proc, tunnel_url = start_tunnel_for_dir(job_dir, port=8752)
     async with httpx.AsyncClient(timeout=60.0) as client:
@@ -238,12 +263,11 @@ async def check_and_publish_due_jobs():
         if job.get("status") == "PUBLISHED":
             continue
         sched_dt = datetime.fromisoformat(job["scheduled_time"])
-        # If due now or within the current 25-minute window
         diff = (now_ist - sched_dt).total_seconds()
-        if 0 <= diff <= 1800 or diff >= 0: # Past due or due now
+        if diff >= 0: # Past due or due now
             print(f"Job {job['id']} is DUE ({job['title']})! Executing publication...")
             await publish_job(job["id"])
-            break # Execute one per cron tick
+            break
 
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] != "--check":
