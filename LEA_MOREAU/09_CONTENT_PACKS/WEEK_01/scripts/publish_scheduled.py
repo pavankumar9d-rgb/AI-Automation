@@ -52,6 +52,9 @@ IST = timezone(timedelta(hours=5, minutes=30))
 PAGE_TOKEN = os.environ.get("INSTAGRAM_FB_ACCESS_TOKEN", "")
 IG_USER_ID = os.environ.get("INSTAGRAM_FB_IG_USER_ID", "17841423433997524")
 
+class ReusableTCPServer(socketserver.TCPServer):
+    allow_reuse_address = True
+
 class StagingHandler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, directory=None, **kwargs):
         super().__init__(*args, directory=directory, **kwargs)
@@ -71,7 +74,7 @@ def start_tunnel_for_dir(target_dir: Path, port: int = 8752):
     def make_handler(*args, **kwargs):
         return StagingHandler(*args, directory=str(target_dir), **kwargs)
 
-    server = socketserver.TCPServer(("127.0.0.1", port), make_handler)
+    server = ReusableTCPServer(("127.0.0.1", port), make_handler)
     server_thread = threading.Thread(target=server.serve_forever, daemon=True)
     server_thread.start()
 
@@ -133,6 +136,34 @@ async def publish_job(job_id: str):
     if not token:
         raise ValueError("INSTAGRAM_FB_ACCESS_TOKEN is missing or empty! Cannot publish.")
 
+    print(f"Checking {job_id} for Instagram account {ig_user_id}...")
+
+    # Fast Dedup Check: If this post was already published live, mark ledger and return immediately
+    async with httpx.AsyncClient(timeout=30.0) as client:
+        try:
+            feed_res = await client.get(
+                f"https://graph.facebook.com/v23.0/{ig_user_id}/media",
+                params={"fields": "id,caption,permalink,timestamp", "limit": 10, "access_token": token}
+            )
+            if feed_res.status_code == 200:
+                feed_data = feed_res.json().get("data", [])
+                for item in feed_data:
+                    item_caption = item.get("caption") or ""
+                    if caption_text and caption_text[:40] in item_caption:
+                        live_id = item["id"]
+                        live_link = item.get("permalink", f"https://www.instagram.com/p/{live_id}")
+                        print(f"✅ Job {job_id} is ALREADY LIVE on Instagram: {live_link}")
+                        target_job["status"] = "PUBLISHED"
+                        target_job["published_at"] = item.get("timestamp", datetime.now(IST).isoformat())
+                        target_job["media_id"] = live_id
+                        target_job["permalink"] = live_link
+                        ledger["uploaded_count"] = sum(1 for p in ledger["posts"] if p.get("status") == "PUBLISHED")
+                        with open(LEDGER_PATH, "w", encoding="utf-8") as f:
+                            json.dump(ledger, f, indent=2)
+                        return item
+        except Exception as e:
+            print(f"Notice: Feed dedup check skipped ({e})")
+
     print(f"Publishing {job_id} to Instagram account {ig_user_id} using Page Token (len {len(token)})...")
 
     server, cf_proc, tunnel_url = start_tunnel_for_dir(job_dir, port=8752)
@@ -159,7 +190,7 @@ async def publish_job(job_id: str):
 
                 # Wait for items to be FINISHED
                 for cid in item_container_ids:
-                    for _ in range(15):
+                    for _ in range(20):
                         res = await client.get(f"https://graph.facebook.com/v23.0/{cid}", params={"fields": "status_code,status", "access_token": token})
                         st = res.json()
                         if (st.get("status_code") or st.get("status")) == "FINISHED":
@@ -180,7 +211,7 @@ async def publish_job(job_id: str):
                     raise RuntimeError(f"Failed to create parent carousel: {parent_data}")
                 print(f"Created parent carousel: {parent_id}")
 
-                for _ in range(15):
+                for _ in range(20):
                     res = await client.get(f"https://graph.facebook.com/v23.0/{parent_id}", params={"fields": "status_code,status", "access_token": token})
                     st = res.json()
                     if (st.get("status_code") or st.get("status")) == "FINISHED":
@@ -215,15 +246,22 @@ async def publish_job(job_id: str):
                     raise RuntimeError(f"Failed to create Reel container: {reel_data}")
                 print(f"Created reel container: {container_id}")
 
-                for attempt in range(30):
+                # Poll container status until FINISHED (up to 3 minutes for video encoding)
+                is_finished = False
+                for attempt in range(60):
                     res = await client.get(f"https://graph.facebook.com/v23.0/{container_id}", params={"fields": "status_code,status", "access_token": token})
                     st = res.json()
                     code = st.get("status_code") or st.get("status")
                     if code == "FINISHED":
+                        is_finished = True
+                        print(f"Reel container {container_id} is FINISHED and ready for publish!")
                         break
                     elif code == "ERROR":
                         raise RuntimeError(f"Reel processing failed on Meta: {st}")
                     await asyncio.sleep(3)
+
+                if not is_finished:
+                    raise TimeoutError(f"Reel container {container_id} did not reach FINISHED status in time (last status: {code})")
 
                 pub_res = await client.post(f"https://graph.facebook.com/v23.0/{ig_user_id}/media_publish", params={"creation_id": container_id, "access_token": token})
                 pub_data = pub_res.json()

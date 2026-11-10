@@ -2,8 +2,19 @@ name: Autonomous Instagram Campaign Publisher
 
 on:
   schedule:
-    # Runs every 15 minutes to guarantee exact scheduled publishing
+    # 15-minute polling interval
     - cron: '*/15 * * * *'
+    # Exact publication slots in UTC (IST - 5h 30m):
+    # REEL_01: Tue Nov 10 @ 19:00 IST -> 13:30 UTC
+    - cron: '30 13 * * *'
+    # POST_02: Wed Nov 11 @ 12:00 IST -> 06:30 UTC
+    - cron: '30 6 * * *'
+    # POST_03: Fri Nov 13 @ 10:30 IST -> 05:00 UTC
+    - cron: '0 5 * * *'
+    # REEL_03: Sat Nov 14 @ 11:30 IST -> 06:00 UTC
+    - cron: '0 6 * * *'
+    # POST_04: Sun Nov 15 @ 11:00 IST -> 05:30 UTC
+    - cron: '30 5 * * *'
   workflow_dispatch:
 
 permissions:

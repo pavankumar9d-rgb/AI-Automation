@@ -30,7 +30,24 @@ logging.getLogger().addHandler(console_handler)
 
 IST = timezone(timedelta(hours=5, minutes=30))
 
+def sync_with_remote():
+    repo_root = BASE_DIR.parent.parent.parent
+    try:
+        subprocess.run(["git", "pull", "--rebase"], cwd=repo_root, capture_output=True, timeout=15)
+    except Exception:
+        pass
+
+def push_to_remote():
+    repo_root = BASE_DIR.parent.parent.parent
+    try:
+        subprocess.run(["git", "add", "LEA_MOREAU/09_CONTENT_PACKS/WEEK_01/PUBLICATION_LEDGER.json"], cwd=repo_root, capture_output=True, timeout=15)
+        subprocess.run(["git", "commit", "-m", "Auto-sync publication ledger [skip ci]"], cwd=repo_root, capture_output=True, timeout=15)
+        subprocess.run(["git", "push", "origin", "main"], cwd=repo_root, capture_output=True, timeout=20)
+    except Exception:
+        pass
+
 def run_due_jobs():
+    sync_with_remote()
     if not LEDGER_PATH.exists():
         return
 
@@ -49,6 +66,7 @@ def run_due_jobs():
             res = subprocess.run(cmd, capture_output=True, text=True)
             if res.returncode == 0:
                 logging.info(f"Successfully executed {job['id']}: {res.stdout.strip()}")
+                push_to_remote()
             else:
                 logging.error(f"Failed to publish {job['id']}: {res.stderr.strip()[:300]}")
 
