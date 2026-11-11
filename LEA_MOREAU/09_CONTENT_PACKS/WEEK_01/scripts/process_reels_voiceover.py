@@ -30,22 +30,25 @@ for item in reel_mappings:
     target_folder = item["folder"]
     os.makedirs(target_folder, exist_ok=True)
     
-    # 1. Copy user audio to target folder
+    # 1. Check or copy audio
     target_audio = os.path.join(target_folder, "VOICEOVER_PEONY.mp3")
-    shutil.copy2(item["audio"], target_audio)
-    print(f"Copied {item['audio']} to {target_audio}")
+    if not os.path.exists(target_audio) and os.path.exists(item["audio"]):
+        shutil.copy2(item["audio"], target_audio)
+        print(f"Copied {item['audio']} to {target_audio}")
+    else:
+        print(f"Using existing voiceover: {target_audio}")
     
-    # 2. Extract clean cover from video at 1.0s
+    # 2. Extract clean cover from video at 1.0s (with same crop removing watermark)
     cover_path = os.path.join(target_folder, "COVER.png")
     cmd_cover = [
         "ffmpeg", "-y", "-ss", "00:00:01.000", "-i", item["video"],
-        "-vframes", "1", "-vf", "scale=1080:1920:flags=lanczos", cover_path
+        "-vframes", "1", "-vf", "crop=635:1130:42:0,scale=1080:1920:flags=lanczos", cover_path
     ]
     subprocess.run(cmd_cover, capture_output=True)
     print(f"Generated cover: {cover_path}")
     
     # 3. Create synchronized video with voiceover
-    # Crop bottom watermark (crop=in_w:in_h-96:0:0, scale=1080:1920) and mux audio
+    # Crop bottom watermark completely (crop=635:1130:42:0, scale=1080:1920) and mux audio
     output_video = os.path.join(target_folder, "REEL_VIDEO_CLEAN.mp4")
     
     # Audio starts at 0.0s matching mouth movements, fades out cleanly at end of video
@@ -54,7 +57,7 @@ for item in reel_mappings:
         "-i", item["video"],
         "-i", target_audio,
         "-filter_complex",
-        "[0:v]crop=in_w:in_h-96:0:0,scale=1080:1920:flags=lanczos,unsharp=5:5:0.5:5:5:0.0[v];[1:a]afade=t=out:st=7.5:d=0.5[a]",
+        "[0:v]crop=635:1130:42:0,scale=1080:1920:flags=lanczos,unsharp=5:5:0.5:5:5:0.0[v];[1:a]afade=t=out:st=7.5:d=0.5[a]",
         "-map", "[v]",
         "-map", "[a]",
         "-c:v", "libx264",
