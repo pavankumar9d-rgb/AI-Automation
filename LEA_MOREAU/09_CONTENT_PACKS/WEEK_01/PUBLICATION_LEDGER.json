@@ -4,7 +4,7 @@
   "generated_at": "2026-11-08T20:59:00+05:30",
   "status": "STAGED_AWAITING_USER_APPROVAL",
   "total_publications": 7,
-  "uploaded_count": 2,
+  "uploaded_count": 3,
   "posts": [
     {
       "id": "POST_01",
@@ -50,7 +50,10 @@
         "SLIDE_03.png"
       ],
       "aspect_ratio": "4:5 (1080x1350)",
-      "status": "READY_FOR_UPLOAD"
+      "status": "PUBLISHED",
+      "published_at": "2026-11-11T14:32:34.117672+05:30",
+      "media_id": "18006844356047883",
+      "permalink": "https://www.instagram.com/p/DfmHQGCl83A/"
     },
     {
       "id": "REEL_02",
