@@ -4,7 +4,7 @@
   "generated_at": "2026-11-08T20:59:00+05:30",
   "status": "STAGED_AWAITING_USER_APPROVAL",
   "total_publications": 7,
-  "uploaded_count": 5,
+  "uploaded_count": 6,
   "posts": [
     {
       "id": "POST_01",
@@ -97,7 +97,10 @@
       "cover": "COVER.png",
       "voiceover": "VOICEOVER_PEONY.mp3",
       "aspect_ratio": "9:16 (1080x1920)",
-      "status": "READY_FOR_UPLOAD"
+      "status": "PUBLISHED",
+      "published_at": "2026-11-14T14:58:05.540182+05:30",
+      "media_id": "17871655743656980",
+      "permalink": "https://www.instagram.com/reel/Dft4hDflSBG/"
     },
     {
       "id": "POST_04",
